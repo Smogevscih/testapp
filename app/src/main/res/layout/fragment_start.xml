@@ -48,6 +48,15 @@
             android:drawableStart="@drawable/ic_google"
             android:text="@string/signin_google"
             tools:ignore="RtlSymmetry" />
+        <Button
+            android:id="@+id/btnSignOutGoogle"
+            style="@style/my_button"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:drawableStart="@drawable/ic_google"
+            android:text="Sign OUT"
+            tools:ignore="RtlSymmetry" />
 
 
     </LinearLayout>

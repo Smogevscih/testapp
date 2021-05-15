@@ -1,30 +1,23 @@
 package com.smic.testapp.ui.start
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+import androidx.lifecycle.ViewModelProvider
 import com.smic.testapp.R
+import com.smic.testapp.SharedViewModel
 import com.smic.testapp.auth.GoogleMedia
 
 
 class StartFragment : Fragment(), View.OnClickListener {
     private lateinit var btnSignInGoogle: Button
+    private lateinit var btnSignOutGoogle: Button
+    private lateinit var sharedViewModel: SharedViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,29 +25,25 @@ class StartFragment : Fragment(), View.OnClickListener {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_start, container, false)
         btnSignInGoogle = root.findViewById(R.id.btnSignInGoogle)
-
+        btnSignOutGoogle = root.findViewById(R.id.btnSignOutGoogle)
+        sharedViewModel =
+            ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         btnSignInGoogle.setOnClickListener(this)
+        btnSignOutGoogle.setOnClickListener(this)
         return root
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnSignInGoogle -> {
-                auth()
+                sharedViewModel.authorizationLiveData.value = GoogleMedia(requireActivity())
+            }
+            R.id.btnSignOutGoogle -> {
+                sharedViewModel.signOut()
             }
 
         }
-    }
-
-
-
-
-    fun auth() {
-
-        val auth = GoogleMedia(requireActivity())
-        auth.signIn()
-
     }
 
 
