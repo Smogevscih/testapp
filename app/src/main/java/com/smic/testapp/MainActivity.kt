@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -23,12 +25,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.smic.testapp.auth.Authorization
+import com.smic.testapp.auth.User
+import com.smic.testapp.auth.emptyUser
+import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var authorization: Authorization
+
+    private lateinit var txtUserName: TextView
+    private lateinit var txtUserEmail: TextView
+    private lateinit var imgAvatar: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,15 +59,43 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val navHeader = navView.getHeaderView(0)
+        txtUserName = navHeader.findViewById(R.id.txtUserName)
+        txtUserEmail = navHeader.findViewById(R.id.txtUserEmail)
+        imgAvatar = navHeader.findViewById(R.id.imgAvatar)
+        val txtExit = navHeader.findViewById<TextView>(R.id.txtExit)
+
         sharedViewModel.authorizationLiveData.observe(this, {
             if (it != null) authorization = it
         })
         sharedViewModel.user.observe(this, {
-            Toast.makeText(this, it.userName, Toast.LENGTH_SHORT).show()
+            fillFields(it)
+            if (it == emptyUser) {
+                txtExit.visibility = View.INVISIBLE
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                navController.navigate(R.id.startFragment)
+
+            } else {
+                txtExit.visibility = View.VISIBLE
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                navController.navigate(R.id.nav_home)
+            }
         })
 
+        txtExit.setOnClickListener {
+            sharedViewModel.signOut()
+        }
     }
 
+    private fun fillFields(user: User) {
+        txtUserName.text = user.userName
+        txtUserEmail.text = user.userEmailOrId
+        Picasso.get()
+            .load(user.userPhoto)
+            .fit()
+            .error(R.drawable.ic_not_auth)
+            .into(imgAvatar)
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)

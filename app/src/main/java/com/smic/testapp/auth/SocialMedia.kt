@@ -59,13 +59,13 @@ class GoogleMedia(private val activity: Activity) : SocialMedia() {
 
             user.value = User(userName, userEmail, userPhotoUrl)
         } catch (e: ApiException) {
-
             user.value = emptyUser
         }
     }
 
     override fun signOut() {
         mGoogleSignInClient.signOut()
+        user.value = emptyUser
     }
 
 

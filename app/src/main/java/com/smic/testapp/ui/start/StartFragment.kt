@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.smic.testapp.MainActivity
 import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
 import com.smic.testapp.auth.GoogleMedia
@@ -18,12 +19,12 @@ class StartFragment : Fragment(), View.OnClickListener {
     private lateinit var sharedViewModel: SharedViewModel
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_start, container, false)
+        (requireActivity() as MainActivity).supportActionBar?.hide()
         btnSignInGoogle = root.findViewById(R.id.btnSignInGoogle)
         btnSignOutGoogle = root.findViewById(R.id.btnSignOutGoogle)
         sharedViewModel =
