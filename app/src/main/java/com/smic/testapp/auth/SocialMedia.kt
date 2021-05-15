@@ -28,7 +28,7 @@ abstract class SocialMedia() : Authorization {
 class GoogleMedia(private val activity: Activity) : SocialMedia() {
     private val mGoogleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 777
-    private lateinit var signInIntent:Intent
+
 
     init {
         nameSocialMedia = "Google"
@@ -39,7 +39,7 @@ class GoogleMedia(private val activity: Activity) : SocialMedia() {
     }
 
     override fun signIn() {
-         signInIntent = mGoogleSignInClient.signInIntent
+        val signInIntent = mGoogleSignInClient.signInIntent
         activity.startActivityForResult(signInIntent, RC_SIGN_IN)
 
     }
@@ -48,14 +48,18 @@ class GoogleMedia(private val activity: Activity) : SocialMedia() {
         requestCode == RC_SIGN_IN
 
     override fun requestUser(data: Intent?) {
-        val completedTask = GoogleSignIn.getSignedInAccountFromIntent(signInIntent)
+        val completedTask = GoogleSignIn.getSignedInAccountFromIntent(data)
         try {
             val account: GoogleSignInAccount =
                 completedTask?.getResult(ApiException::class.java)!!
+            val userName = account.displayName ?: ""
+            val userEmail = account.email ?: ""
+            val userPhotoUrl =
+                if (account.photoUrl != null) account.photoUrl.toString() else emptyUser.userPhoto
 
-            user.value = User(account.displayName!!, account.email!!, account.photoUrl!!.toString())
+            user.value = User(userName, userEmail, userPhotoUrl)
         } catch (e: ApiException) {
-            Log.w("MyTAG", "signInResult:failed code=" + e.statusCode)
+
             user.value = emptyUser
         }
     }

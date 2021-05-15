@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         if (data == null || !authorization.getResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data)
         } else {
-            authorization.requestUser(data)
+            sharedViewModel.requestUser(data)
         }
     }
 
