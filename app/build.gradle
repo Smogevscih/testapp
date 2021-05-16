@@ -7,6 +7,14 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    signingConfigs {
+        debug {
+            storeFile file('C:\\debugKS\\keystore.jks')
+            storePassword 'testpass'
+            keyAlias 'key0'
+            keyPassword 'testpass'
+        }
+    }
     defaultConfig {
         applicationId "com.smic.testapp"
         minSdkVersion 23
