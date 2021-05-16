@@ -27,6 +27,21 @@ abstract class SocialMedia() : Authorization {
 
     override fun getUserLiveData(): MutableLiveData<User> = user
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as SocialMedia
+
+        if (nameSocialMedia != other.nameSocialMedia) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return nameSocialMedia.hashCode()
+    }
+
 }
 
 class GoogleMedia(private val activity: Activity) : SocialMedia() {

@@ -27,10 +27,18 @@ class SharedViewModel : ViewModel() {
     }
     private var currentAuthorization: Authorization? = null
 
-
-    private fun checkAuth(authorization: Authorization) {
-        currentAuthorization = authorization
-        currentAuthorization?.signIn()
+    //User must have only one auth
+    private fun checkAuth(authorization: Authorization?) {
+        if (currentAuthorization == null) {
+            currentAuthorization = authorization
+            currentAuthorization!!.signIn()
+        } else if (authorization != null && currentAuthorization != authorization) {
+            currentAuthorization!!.signOut()
+            currentAuthorization = authorization
+            currentAuthorization!!.signIn()
+        } else if(currentAuthorization == authorization){
+            currentAuthorization!!.signIn()
+        }
     }
 
     fun requestUser(data: Intent?) {
