@@ -12,9 +12,10 @@ import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
 import com.smic.testapp.auth.FBMedia
 import com.smic.testapp.auth.GoogleMedia
+import com.smic.testapp.ui.IOnBackPressed
 
 
-class StartFragment : Fragment(), View.OnClickListener {
+class StartFragment : Fragment(), View.OnClickListener, IOnBackPressed {
     private lateinit var btnSignInGoogle: Button
     private lateinit var btnSignInVK: Button
     private lateinit var btnSignInFB: Button
@@ -32,6 +33,9 @@ class StartFragment : Fragment(), View.OnClickListener {
         btnSignInFB = root.findViewById(R.id.btnSignInFB)
         sharedViewModel =
             ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        sharedViewModel.drawerState.value = false
+
 
         btnSignInGoogle.setOnClickListener(this)
         btnSignInVK.setOnClickListener(this)

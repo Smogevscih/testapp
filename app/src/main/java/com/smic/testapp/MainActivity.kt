@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.Task
 import com.smic.testapp.auth.Authorization
 import com.smic.testapp.auth.User
 import com.smic.testapp.auth.emptyUser
+import com.smic.testapp.ui.IOnBackPressed
+import com.smic.testapp.utils.getCurrentFragment
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
@@ -72,14 +74,19 @@ class MainActivity : AppCompatActivity() {
             fillFields(it)
             if (it == emptyUser) {
                 txtExit.visibility = View.INVISIBLE
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+              //  drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                 navController.navigate(R.id.startFragment)
 
             } else {
                 txtExit.visibility = View.VISIBLE
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+           //     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
                 navController.navigate(R.id.nav_home)
             }
+        })
+
+        sharedViewModel.drawerState.observe(this, {
+            if (it) drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            else drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         })
 
         txtExit.setOnClickListener {
@@ -96,6 +103,7 @@ class MainActivity : AppCompatActivity() {
             .error(R.drawable.ic_not_auth)
             .into(imgAvatar)
     }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
@@ -116,6 +124,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.getCurrentFragment
+        if (fragment is IOnBackPressed) {//from start fragment we can finish app
+            sharedViewModel.signOut()
+            finish()
+        } else
+            super.onBackPressed()
 
+    }
 
 }

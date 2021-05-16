@@ -27,6 +27,12 @@ class SharedViewModel : ViewModel() {
     }
     private var currentAuthorization: Authorization? = null
 
+    //describes the state of the drawer
+    val drawerState = MutableLiveData<Boolean>().apply {
+        value = false
+    }
+
+
     //User must have only one auth
     private fun checkAuth(authorization: Authorization?) {
         if (currentAuthorization == null) {
@@ -36,7 +42,7 @@ class SharedViewModel : ViewModel() {
             currentAuthorization!!.signOut()
             currentAuthorization = authorization
             currentAuthorization!!.signIn()
-        } else if(currentAuthorization == authorization){
+        } else if (currentAuthorization == authorization) {
             currentAuthorization!!.signIn()
         }
     }
