@@ -49,13 +49,23 @@
             android:text="@string/signin_google"
             tools:ignore="RtlSymmetry" />
         <Button
-            android:id="@+id/btnSignOutGoogle"
+            android:id="@+id/btnSignInVK"
             style="@style/my_button"
             android:layout_width="@dimen/button_width"
             android:layout_height="48dp"
             android:layout_margin="8dp"
-            android:drawableStart="@drawable/ic_google"
-            android:text="Sign OUT"
+            android:drawableStart="@drawable/ic_vk"
+            android:text="@string/signin_vk"
+            tools:ignore="RtlSymmetry" />
+
+        <Button
+            android:id="@+id/btnSignInFB"
+            style="@style/my_button"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:drawableStart="@drawable/ic_fb"
+            android:text="@string/signin_fb"
             tools:ignore="RtlSymmetry" />
 
 

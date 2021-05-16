@@ -12,4 +12,7 @@
     <string name="txt_Exit">Exit</string>
 
     <string name="signin_google">Connect with Google</string>
+    <string name="signin_vk">Connect with VK</string>
+    <string name="signin_fb">Connect with Facebook</string>
+
 </resources>

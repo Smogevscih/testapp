@@ -15,7 +15,8 @@ import com.smic.testapp.auth.GoogleMedia
 
 class StartFragment : Fragment(), View.OnClickListener {
     private lateinit var btnSignInGoogle: Button
-    private lateinit var btnSignOutGoogle: Button
+    private lateinit var btnSignInVK: Button
+    private lateinit var btnSignInFB: Button
     private lateinit var sharedViewModel: SharedViewModel
 
 
@@ -26,12 +27,14 @@ class StartFragment : Fragment(), View.OnClickListener {
         val root = inflater.inflate(R.layout.fragment_start, container, false)
         (requireActivity() as MainActivity).supportActionBar?.hide()
         btnSignInGoogle = root.findViewById(R.id.btnSignInGoogle)
-        btnSignOutGoogle = root.findViewById(R.id.btnSignOutGoogle)
+        btnSignInVK = root.findViewById(R.id.btnSignInVK)
+        btnSignInFB = root.findViewById(R.id.btnSignInFB)
         sharedViewModel =
             ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
         btnSignInGoogle.setOnClickListener(this)
-        btnSignOutGoogle.setOnClickListener(this)
+        btnSignInVK.setOnClickListener(this)
+        btnSignInFB.setOnClickListener(this)
         return root
     }
 
@@ -40,8 +43,11 @@ class StartFragment : Fragment(), View.OnClickListener {
             R.id.btnSignInGoogle -> {
                 sharedViewModel.authorizationLiveData.value = GoogleMedia(requireActivity())
             }
-            R.id.btnSignOutGoogle -> {
-                sharedViewModel.signOut()
+            R.id.btnSignInVK -> {
+
+            }
+            R.id.btnSignInFB -> {
+
             }
 
         }
