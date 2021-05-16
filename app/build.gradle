@@ -62,6 +62,10 @@ dependencies {
     //Authorization
     //GoogleSDK 
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    //VKSDK for auth
+    implementation 'com.vk:androidsdk:2.1.1'
+    //FBSDK for auth
+    implementation 'com.facebook.android:facebook-login:8.1.0'
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'

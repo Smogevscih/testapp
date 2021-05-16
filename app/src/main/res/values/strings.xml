@@ -15,4 +15,7 @@
     <string name="signin_vk">Connect with VK</string>
     <string name="signin_fb">Connect with Facebook</string>
 
+    <string name="facebook_app_id">770252100524061</string>
+    <string name="fb_login_protocol_scheme">fb770252100524061</string>
+
 </resources>

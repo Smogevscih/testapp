@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.smic.testapp.MainActivity
 import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
+import com.smic.testapp.auth.FBMedia
 import com.smic.testapp.auth.GoogleMedia
 
 
@@ -47,7 +48,7 @@ class StartFragment : Fragment(), View.OnClickListener {
 
             }
             R.id.btnSignInFB -> {
-
+                sharedViewModel.authorizationLiveData.value = FBMedia(requireActivity())
             }
 
         }
