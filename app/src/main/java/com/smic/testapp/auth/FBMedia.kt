@@ -13,10 +13,13 @@ import com.facebook.login.LoginResult
 16.05.2021
  **/
 
-class FBMedia(private val activity: Activity) : SocialMedia(), Authorization {
+class FBMedia(private val activity: Activity) : SocialMedia() {
 
     private var callbackManager = CallbackManager.Factory.create()
 
+    init {
+        nameSocialMedia = "FB"
+    }
 
     override fun signIn() {
 

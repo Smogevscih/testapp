@@ -12,6 +12,7 @@ import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
 import com.smic.testapp.auth.FBMedia
 import com.smic.testapp.auth.GoogleMedia
+import com.smic.testapp.auth.VKMedia
 import com.smic.testapp.ui.IOnBackPressed
 
 
@@ -49,7 +50,7 @@ class StartFragment : Fragment(), View.OnClickListener, IOnBackPressed {
                 sharedViewModel.authorizationLiveData.value = GoogleMedia(requireActivity())
             }
             R.id.btnSignInVK -> {
-
+                sharedViewModel.authorizationLiveData.value = VKMedia(requireActivity())
             }
             R.id.btnSignInFB -> {
                 sharedViewModel.authorizationLiveData.value = FBMedia(requireActivity())

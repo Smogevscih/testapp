@@ -18,4 +18,6 @@
     <string name="facebook_app_id">770252100524061</string>
     <string name="fb_login_protocol_scheme">fb770252100524061</string>
 
+    <integer name="com_vk_sdk_AppId">7856044</integer>
+
 </resources>

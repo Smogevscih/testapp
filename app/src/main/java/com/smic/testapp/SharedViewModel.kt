@@ -25,6 +25,7 @@ class SharedViewModel : ViewModel() {
             }
         }
     }
+
     private var currentAuthorization: Authorization? = null
 
     //describes the state of the drawer
