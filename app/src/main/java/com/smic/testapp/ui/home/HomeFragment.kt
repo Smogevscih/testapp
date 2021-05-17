@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smic.testapp.MainActivity
 import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
+import com.smic.testapp.adapter.PaginationScrollListener
 
 class HomeFragment : Fragment() {
 
@@ -50,6 +51,24 @@ class HomeFragment : Fragment() {
             homeViewModel.nextPage(recyclerGithubUsers)
 
         }
+
+        recyclerGithubUsers.addOnScrollListener(object :
+            PaginationScrollListener(
+                linearLayoutManager
+            ) {
+
+            override fun loadMoreItems() {
+                homeViewModel.nextPage(recyclerGithubUsers)
+            }
+
+            override val totalPageCount: Int
+                get() = homeViewModel.totalPageCount
+            override val isLastPage: Boolean
+                get() = homeViewModel.isLastPage()
+
+        })
+
+
 
         return root
     }

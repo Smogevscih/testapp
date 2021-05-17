@@ -1,28 +1,28 @@
 package com.smic.testapp.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.smic.testapp.R
 import com.smic.testapp.network.GithubUser
-import com.smic.testapp.network.emptyGithubUser
 import com.smic.testapp.utils.hide
 import com.smic.testapp.utils.show
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class UserAdapter(private val gitHubUsers: ArrayList<GithubUser>) :
+
+class UserAdapter(private val gitHubUsers: ArrayList<GithubUser>, var isLastPage: Boolean) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val USER_HOLD = 100
     private val PROGRESS_HOLD = 200
+    private val PER_PAGE = 30
 
-    init {
-        gitHubUsers.add(emptyGithubUser)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view: View
@@ -48,21 +48,24 @@ class UserAdapter(private val gitHubUsers: ArrayList<GithubUser>) :
             is ProgressHolder -> holder.bind()
         }
 
-        holder.itemView.tag = gitHubUsers[position]
     }
 
-    override fun getItemCount(): Int = gitHubUsers.size
+    override fun getItemCount() = if (isLastPage) gitHubUsers.size else gitHubUsers.size + 1
+
 
     override fun getItemViewType(position: Int) =
-        if (gitHubUsers[position] == emptyGithubUser) PROGRESS_HOLD
+        if (position == gitHubUsers.size) PROGRESS_HOLD
         else USER_HOLD
 
-    fun addNewUsers(newGitHubUsers: ArrayList<GithubUser>) {
-        gitHubUsers.removeLast()
+    fun addNewUsers(newGitHubUsers: ArrayList<GithubUser>, _isLastPage: Boolean) {
+        isLastPage = _isLastPage
+        val positionStart = gitHubUsers.size
         gitHubUsers.addAll(newGitHubUsers)
-        gitHubUsers.add(emptyGithubUser)
-        notifyItemRangeInserted(gitHubUsers.size - 31, 30)
+
+        notifyItemInserted(positionStart)
+        Log.e("MyTag", gitHubUsers.size.toString())
     }
+
 
 }
 
@@ -103,5 +106,29 @@ class ProgressHolder(itemView: View) :
     fun bind() {
         progressRequest.show
     }
+
+}
+
+
+abstract class PaginationScrollListener(var layoutManager: LinearLayoutManager) :
+    RecyclerView.OnScrollListener() {
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        val visibleItemCount = layoutManager.childCount
+        val totalItemCount = layoutManager.itemCount
+        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+        if (!isLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >=
+                totalItemCount && firstVisibleItemPosition >= 0
+            ) {
+                loadMoreItems()
+            }
+        }
+    }
+
+    protected abstract fun loadMoreItems()
+    abstract val totalPageCount: Int
+    abstract val isLastPage: Boolean
+
 
 }
