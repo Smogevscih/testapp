@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smic.testapp.MainActivity
 import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
-import com.smic.testapp.TestApp
 
 class HomeFragment : Fragment() {
 
@@ -35,6 +34,7 @@ class HomeFragment : Fragment() {
         sharedViewModel.drawerState.value = true
 
         button3 = root.findViewById(R.id.button3)
+        val button4: Button = root.findViewById(R.id.button4)
         recyclerGithubUsers = root.findViewById(R.id.recyclerGithubUsers)
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerGithubUsers.layoutManager = linearLayoutManager
@@ -42,10 +42,14 @@ class HomeFragment : Fragment() {
 
         button3.setOnClickListener {
 
-            homeViewModel.method(TestApp.requestApi, recyclerGithubUsers)
+            homeViewModel.method(recyclerGithubUsers)
 
         }
+        button4.setOnClickListener {
 
+            homeViewModel.nextPage(recyclerGithubUsers)
+
+        }
 
         return root
     }

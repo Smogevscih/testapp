@@ -7,13 +7,13 @@ import retrofit2.http.Query
 
 interface RequestGit {
 
-@GET("search/users")
-fun searchUsers(
-    @Query("q", encoded = true) query: String,
-    @Query("per_page", encoded = true) per_page: Int,
-    @Query("page", encoded = true) page: Int
-):
-        Single<SearchUserResponse>
+    @GET("search/users")
+    fun searchUsers(
+        @Query("q", encoded = true) query: String,
+        @Query("per_page", encoded = true) per_page: Int,
+        @Query("page", encoded = true) page: Int
+    ):
+            Single<SearchUserResponse>
 
 }
 
@@ -21,7 +21,7 @@ data class SearchUserResponse(
     @SerializedName("incomplete_results")
     val incompleteResults: Boolean?,
     @SerializedName("items")
-    val userItems: List<GithubUser>?,
+    val userItems: ArrayList<GithubUser>?,
     @SerializedName("total_count")
     val totalCount: Int?
 )
@@ -42,6 +42,8 @@ data class GithubUser(
     var followers: Int,
     @SerializedName("following")
     var following: Int
-) 
+)
+
+val emptyGithubUser = GithubUser("", "", "", "", 0, 0, 0)
 
 
