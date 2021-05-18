@@ -16,7 +16,6 @@ import com.smic.testapp.adapter.PaginationScrollListener
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
@@ -48,7 +47,6 @@ class HomeFragment : Fragment() {
 
 
 
-
         //add listener for pagination
         recyclerGithubUsers.addOnScrollListener(object :
             PaginationScrollListener(
@@ -62,6 +60,8 @@ class HomeFragment : Fragment() {
                 get() = homeViewModel.totalCount
             override val isLastPage: Boolean
                 get() = homeViewModel.isLastPage()
+            override val possibleLoad: Boolean
+                get() = homeViewModel.possibleLoad
 
         })
 
@@ -83,24 +83,3 @@ class HomeFragment : Fragment() {
 
 }
 
-class RxSearchView() {
-
-    fun fromView(searchView: SearchView): Observable<String> {
-        val publishSubject = PublishSubject.create<String>()
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                publishSubject.onComplete();
-                return true;
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                publishSubject.onNext(newText);
-                return true;
-            }
-
-        })
-
-        return publishSubject
-    }
-}

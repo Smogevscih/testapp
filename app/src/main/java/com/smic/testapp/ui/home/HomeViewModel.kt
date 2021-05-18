@@ -1,7 +1,5 @@
 package com.smic.testapp.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.smic.testapp.TestApp.Companion.requestApi
@@ -9,22 +7,18 @@ import com.smic.testapp.adapter.UserAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
 
     private val compositeDisposable = CompositeDisposable()
     var totalCount = 0
     private val PER_PAGE = 30
     private var page = 1
     private var maxPage = 1
+    var possibleLoad = true
 
     private var currentQuery = ""
 
@@ -56,6 +50,7 @@ class HomeViewModel : ViewModel() {
     private fun initValue() {
         page = 1
         maxPage = 1
+        possibleLoad = true
     }
 
     private fun maxPages() {
@@ -65,12 +60,11 @@ class HomeViewModel : ViewModel() {
     }
 
     fun nextPage(recyclerGithubUsers: RecyclerView) {
-        if (!isLastPage()) {
+        if (!isLastPage() && possibleLoad) {
+            possibleLoad = false
             page = page.inc()
             compositeDisposable.add(
                 requestApi.searchUsers(currentQuery, PER_PAGE, page)
-
-                    .delay(600, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
@@ -79,6 +73,7 @@ class HomeViewModel : ViewModel() {
                                 .addNewUsers(
                                     githubUsers, isLastPage()
                                 )
+                            possibleLoad = true
                         }
 
                     }, {
@@ -89,4 +84,9 @@ class HomeViewModel : ViewModel() {
     }
 
     fun isLastPage() = page == maxPage
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.dispose()
+    }
 }

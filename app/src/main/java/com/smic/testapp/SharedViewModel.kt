@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.smic.testapp.auth.Authorization
 import com.smic.testapp.auth.User
+import com.smic.testapp.auth.emptyUser
 
 /**
  *@autor Smogevscih Yuri
@@ -13,8 +14,8 @@ import com.smic.testapp.auth.User
  **/
 class SharedViewModel : ViewModel() {
     private val userLiveData = MutableLiveData<User>().apply {
-        //  value = emptyUser
-        value = User("fffrfr","frfrfr","http://") //временно
+          value = emptyUser
+        //value = User("fffrfr","frfrfr","http://") //временно
     }
     val user: LiveData<User> = userLiveData
 
