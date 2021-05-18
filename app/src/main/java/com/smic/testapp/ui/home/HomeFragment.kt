@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,13 +13,21 @@ import com.smic.testapp.MainActivity
 import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
 import com.smic.testapp.adapter.PaginationScrollListener
+import io.reactivex.Observable
+import io.reactivex.ObservableSource
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var sharedViewModel: SharedViewModel
-    private lateinit var button3: Button
     private lateinit var recyclerGithubUsers: RecyclerView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,29 +42,21 @@ class HomeFragment : Fragment() {
             ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         sharedViewModel.drawerState.value = true
 
-        button3 = root.findViewById(R.id.button3)
-        val button4: Button = root.findViewById(R.id.button4)
+
+        val searchView = root.findViewById<SearchView>(R.id.searchView)
+
         recyclerGithubUsers = root.findViewById(R.id.recyclerGithubUsers)
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerGithubUsers.layoutManager = linearLayoutManager
 
 
-        button3.setOnClickListener {
 
-            homeViewModel.method(recyclerGithubUsers)
 
-        }
-        button4.setOnClickListener {
-
-            homeViewModel.nextPage(recyclerGithubUsers)
-
-        }
-
+        //add listener for pagination
         recyclerGithubUsers.addOnScrollListener(object :
             PaginationScrollListener(
                 linearLayoutManager
             ) {
-
             override fun loadMoreItems() {
                 homeViewModel.nextPage(recyclerGithubUsers)
             }
@@ -70,8 +70,48 @@ class HomeFragment : Fragment() {
 
 
 
+        RxSearchView().fromView(searchView)
+            .debounce(600, TimeUnit.MILLISECONDS)
+            .filter { it.isNotEmpty() }
+            .distinctUntilChanged()
+            .switchMap(object : Function<String, ObservableSource<String>> {
+                override fun apply(t: String): ObservableSource<String> {
+                    return Observable.just(t)
+                }
+            })
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object :Consumer<String>{
+                override fun accept(t: String) {
+                   homeViewModel.method(t,recyclerGithubUsers)
+                }
+            })
+
+
         return root
     }
 
 
+}
+
+class RxSearchView() {
+
+    fun fromView(searchView: SearchView): Observable<String> {
+        val publishSubject = PublishSubject.create<String>()
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                publishSubject.onComplete();
+                return true;
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                publishSubject.onNext(newText);
+                return true;
+            }
+
+        })
+
+        return publishSubject
+    }
 }

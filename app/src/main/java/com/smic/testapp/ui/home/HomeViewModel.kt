@@ -26,13 +26,17 @@ class HomeViewModel : ViewModel() {
     private var page = 1
     private var maxPage = 1
 
-    private val QUERY = "smog"
+    private var currentQuery = ""
+
 
     fun method(
+        query: String,
         recyclerGithubUsers: RecyclerView
     ) {
+        initValue()
+        currentQuery = query
         compositeDisposable.add(
-            requestApi.searchUsers(QUERY, PER_PAGE, page)
+            requestApi.searchUsers(query, PER_PAGE, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
@@ -49,6 +53,11 @@ class HomeViewModel : ViewModel() {
 
     }
 
+    private fun initValue() {
+        page = 1
+        maxPage = 1
+    }
+
     private fun maxPages() {
         maxPage = ceil((totalCount.toDouble() / PER_PAGE.toDouble())).roundToInt()
         if (maxPage == 0) maxPage = 1
@@ -59,7 +68,8 @@ class HomeViewModel : ViewModel() {
         if (!isLastPage()) {
             page = page.inc()
             compositeDisposable.add(
-                requestApi.searchUsers(QUERY, PER_PAGE, page)
+                requestApi.searchUsers(currentQuery, PER_PAGE, page)
+
                     .delay(600, TimeUnit.MILLISECONDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
