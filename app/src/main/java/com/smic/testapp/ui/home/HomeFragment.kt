@@ -14,10 +14,7 @@ import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
 import com.smic.testapp.adapter.PaginationScrollListener
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
@@ -74,18 +71,10 @@ class HomeFragment : Fragment() {
             .debounce(600, TimeUnit.MILLISECONDS)
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
-            .switchMap(object : Function<String, ObservableSource<String>> {
-                override fun apply(t: String): ObservableSource<String> {
-                    return Observable.just(t)
-                }
-            })
+            .switchMap { quest -> Observable.just(quest) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object :Consumer<String>{
-                override fun accept(t: String) {
-                   homeViewModel.method(t,recyclerGithubUsers)
-                }
-            })
+            .subscribe { quest -> homeViewModel.method(quest, recyclerGithubUsers) }
 
 
         return root
