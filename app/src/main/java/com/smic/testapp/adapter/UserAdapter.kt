@@ -21,7 +21,6 @@ class UserAdapter(private val gitHubUsers: ArrayList<GithubUser>, var isLastPage
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val USER_HOLD = 100
     private val PROGRESS_HOLD = 200
-    private val PER_PAGE = 30
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -54,7 +53,8 @@ class UserAdapter(private val gitHubUsers: ArrayList<GithubUser>, var isLastPage
 
 
     override fun getItemViewType(position: Int) =
-        if (position == gitHubUsers.size) PROGRESS_HOLD
+        if (position == gitHubUsers.size)
+            PROGRESS_HOLD
         else USER_HOLD
 
     fun addNewUsers(newGitHubUsers: ArrayList<GithubUser>, _isLastPage: Boolean) {

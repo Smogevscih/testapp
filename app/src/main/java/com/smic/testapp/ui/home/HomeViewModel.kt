@@ -9,6 +9,7 @@ import com.smic.testapp.adapter.UserAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
@@ -20,25 +21,27 @@ class HomeViewModel : ViewModel() {
     val text: LiveData<String> = _text
 
     private val compositeDisposable = CompositeDisposable()
-    var totalPageCount = 0
+    var totalCount = 0
     private val PER_PAGE = 30
     private var page = 1
     private var maxPage = 1
+
+    private val QUERY = "smog"
 
     fun method(
         recyclerGithubUsers: RecyclerView
     ) {
         compositeDisposable.add(
-            requestApi.searchUsers("smog", PER_PAGE, page)
+            requestApi.searchUsers(QUERY, PER_PAGE, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    totalPageCount = it.totalCount ?: 0
-                    it.userItems?.let { it1 ->
-                        recyclerGithubUsers.adapter = UserAdapter(it1,isLastPage())
-
-                    }
+                    totalCount = it.totalCount ?: 0
                     maxPages()
+                    it.userItems?.let { githubUsers ->
+                        recyclerGithubUsers.adapter = UserAdapter(githubUsers, isLastPage())
+                    }
+
                 }, {
 
                 })
@@ -47,25 +50,32 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun maxPages() {
-        maxPage = ceil((totalPageCount.toDouble() / PER_PAGE.toDouble())).roundToInt()
+        maxPage = ceil((totalCount.toDouble() / PER_PAGE.toDouble())).roundToInt()
         if (maxPage == 0) maxPage = 1
+        if (maxPage > 10) maxPage = 10 //for test access
     }
 
     fun nextPage(recyclerGithubUsers: RecyclerView) {
-        page = page.inc()
-        compositeDisposable.add(
-            requestApi.searchUsers("smog", PER_PAGE, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    it.userItems?.let { it1 ->
-                        (recyclerGithubUsers.adapter as UserAdapter).addNewUsers(it1,isLastPage())
-                    }
+        if (!isLastPage()) {
+            page = page.inc()
+            compositeDisposable.add(
+                requestApi.searchUsers(QUERY, PER_PAGE, page)
+                    .delay(600, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        it.userItems?.let { githubUsers ->
+                            (recyclerGithubUsers.adapter as UserAdapter)
+                                .addNewUsers(
+                                    githubUsers, isLastPage()
+                                )
+                        }
 
-                }, {
+                    }, {
 
-                })
-        )
+                    })
+            )
+        }
     }
 
     fun isLastPage() = page == maxPage

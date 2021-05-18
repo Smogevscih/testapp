@@ -44,6 +44,6 @@ data class GithubUser(
     var following: Int
 )
 
-val emptyGithubUser = GithubUser("", "", "", "", 0, 0, 0)
+
 
 

@@ -62,7 +62,7 @@ class HomeFragment : Fragment() {
             }
 
             override val totalPageCount: Int
-                get() = homeViewModel.totalPageCount
+                get() = homeViewModel.totalCount
             override val isLastPage: Boolean
                 get() = homeViewModel.isLastPage()
 
