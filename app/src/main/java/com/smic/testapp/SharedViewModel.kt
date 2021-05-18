@@ -45,6 +45,7 @@ class SharedViewModel : ViewModel() {
             currentAuthorization = authorization
             currentAuthorization!!.signIn()
         } else if (currentAuthorization == authorization) {
+            currentAuthorization = authorization
             currentAuthorization!!.signIn()
         }
     }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">testapp</string>
     <string name="app_Name">TEST App</string>
+    <string name="fragment_github_name">GitHub Users</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>

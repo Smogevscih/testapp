@@ -33,7 +33,9 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-        (requireActivity() as MainActivity).supportActionBar?.show()
+        (requireActivity() as MainActivity).supportActionBar?.apply {
+            title = getString(R.string.fragment_github_name)
+        }?.show()
         sharedViewModel =
             ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         sharedViewModel.drawerState.value = true
@@ -44,7 +46,6 @@ class HomeFragment : Fragment() {
         recyclerGithubUsers = root.findViewById(R.id.recyclerGithubUsers)
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerGithubUsers.layoutManager = linearLayoutManager
-
 
 
         //add listener for pagination
