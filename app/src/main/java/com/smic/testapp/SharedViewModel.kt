@@ -61,4 +61,8 @@ class SharedViewModel : ViewModel() {
         currentAuthorization?.signOut()
     }
 
+    fun changeAccount() {
+        TODO("Not yet implemented")
+    }
+
 }

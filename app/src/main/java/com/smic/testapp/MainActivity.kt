@@ -3,6 +3,7 @@ package com.smic.testapp
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -123,6 +124,17 @@ class MainActivity : AppCompatActivity() {
         } else
             super.onBackPressed()
 
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+
+            R.id.change_account -> {
+                sharedViewModel.changeAccount()
+            }
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
