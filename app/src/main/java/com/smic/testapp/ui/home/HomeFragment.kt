@@ -14,8 +14,7 @@ import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
 import com.smic.testapp.adapter.PaginationScrollListener
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
@@ -23,6 +22,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var recyclerGithubUsers: RecyclerView
+    private lateinit var disposeSearchView: Disposable
 
 
     override fun onCreateView(
@@ -67,20 +67,20 @@ class HomeFragment : Fragment() {
         })
 
 
-
-        RxSearchView().fromView(searchView)
+        disposeSearchView = RxSearchView().fromView(searchView)
             .debounce(600, TimeUnit.MILLISECONDS)
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
             .switchMap { quest -> Observable.just(quest) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { quest -> homeViewModel.method(quest, recyclerGithubUsers) }
+            .subscribe { quest -> homeViewModel.firstRequest(quest, recyclerGithubUsers) }
 
 
         return root
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        disposeSearchView.dispose()
+    }
 }
 

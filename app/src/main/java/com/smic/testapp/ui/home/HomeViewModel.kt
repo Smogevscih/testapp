@@ -23,7 +23,7 @@ class HomeViewModel : ViewModel() {
     private var currentQuery = ""
 
 
-    fun method(
+    fun firstRequest(
         query: String,
         recyclerGithubUsers: RecyclerView
     ) {
