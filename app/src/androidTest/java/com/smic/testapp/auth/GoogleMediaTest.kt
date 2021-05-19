@@ -1,5 +1,6 @@
 package com.smic.testapp.auth
 
+import android.content.Intent
 import androidx.test.annotation.UiThreadTest
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.google.common.truth.Truth
@@ -13,6 +14,7 @@ import org.junit.Test
  * 19.05.2021
  */
 class GoogleMediaTest {
+    private val RC_SIGN_IN = 777
     @get:Rule
     val rule = ActivityScenarioRule(MainActivity::class.java)
 
@@ -34,10 +36,20 @@ class GoogleMediaTest {
 
     @Test
     fun getResult() {
+        var result = googleMedia.getResult(RC_SIGN_IN, 0, null)
+        Truth.assertThat(result).isTrue()
+        result = googleMedia.getResult(RC_SIGN_IN - 1, 0, null)
+        Truth.assertThat(result).isFalse()
     }
 
     @Test
+    @UiThreadTest
     fun requestUser() {
+        val intent = Intent()
+        googleMedia.requestUser(intent)
+        val user = googleMedia.getUserLiveData().value
+        Truth.assertThat(user).isInstanceOf(User::class.java)
+        Truth.assertThat(user).isEqualTo(emptyUser)
     }
 
     @Test
