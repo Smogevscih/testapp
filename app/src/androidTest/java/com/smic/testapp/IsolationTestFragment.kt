@@ -9,10 +9,7 @@ import com.smic.testapp.ui.start.StartFragment
 import org.junit.Test
 
 
-class UITest {
-
-
-
+class IsolationTestFragment {
     @Test//We have to see 3 enabled buttons and the app name from StartFragment
     fun startScreen() {
 
@@ -46,6 +43,4 @@ class UITest {
             .check(matches(isDisplayed()))
 
     }
-
-
 }

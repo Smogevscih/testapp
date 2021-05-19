@@ -71,12 +71,12 @@ class SharedViewModelTest {
 
     @Test
     fun test_signOut() {
-        //first step auth
+        //first step - auth
         viewModel.authorizationLiveData.value = testAuth
         viewModel.requestUser(Intent())
         var result = viewModel.user.value
         Truth.assertThat(result).isEqualTo(testUser)
-        //second step sign out
+        //second step - sign out
         viewModel.signOut()
         result = viewModel.user.value
         Truth.assertThat(result).isEqualTo(emptyUser)
