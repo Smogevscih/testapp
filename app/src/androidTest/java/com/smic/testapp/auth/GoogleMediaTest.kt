@@ -1,5 +1,6 @@
 package com.smic.testapp.auth
 
+import androidx.test.annotation.UiThreadTest
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.google.common.truth.Truth
 import com.smic.testapp.MainActivity
@@ -40,12 +41,12 @@ class GoogleMediaTest {
     }
 
     @Test
+    @UiThreadTest
     fun signOut() {
-        rule.scenario.onActivity {
-            googleMedia.signOut()
-            val user = googleMedia.getUserLiveData().value
-            Truth.assertThat(user).isInstanceOf(User::class.java)
-            Truth.assertThat(user).isEqualTo(emptyUser)
-        }
+        googleMedia.signOut()
+        val user = googleMedia.getUserLiveData().value
+        Truth.assertThat(user).isInstanceOf(User::class.java)
+        Truth.assertThat(user).isEqualTo(emptyUser)
+
     }
 }

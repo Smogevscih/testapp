@@ -10,13 +10,13 @@ class RxSearchView {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                publishSubject.onComplete();
-                return true;
+                publishSubject.onComplete()
+                return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                publishSubject.onNext(newText);
-                return true;
+                publishSubject.onNext(newText)
+                return true
             }
 
         })

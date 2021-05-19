@@ -14,8 +14,7 @@ import com.smic.testapp.auth.emptyUser
  **/
 class SharedViewModel : ViewModel() {
     private val userLiveData = MutableLiveData<User>().apply {
-          value = emptyUser
-        //value = User("fffrfr","frfrfr","http://") //временно
+        value = emptyUser
     }
     val user: LiveData<User> = userLiveData
 
