@@ -1,4 +1,4 @@
-package com.smic.testapp.ui.home
+package com.smic.testapp.ui.github
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,9 +17,9 @@ import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
 
-class HomeFragment : Fragment() {
+class GithubUserFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var githubUserViewModel: GithubUserViewModel
     private lateinit var sharedViewModel: SharedViewModel
     private lateinit var recyclerGithubUsers: RecyclerView
     private lateinit var disposeSearchView: Disposable
@@ -30,9 +30,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_github_user, container, false)
+        githubUserViewModel =
+            ViewModelProvider(this).get(GithubUserViewModel::class.java)
         (requireActivity() as MainActivity).supportActionBar?.apply {
             title = getString(R.string.fragment_github_name)
         }?.show()
@@ -54,15 +54,15 @@ class HomeFragment : Fragment() {
                 linearLayoutManager
             ) {
             override fun loadMoreItems() {
-                homeViewModel.nextPage(recyclerGithubUsers)
+                githubUserViewModel.nextPage(recyclerGithubUsers)
             }
 
             override val totalPageCount: Int
-                get() = homeViewModel.totalCount
+                get() = githubUserViewModel.totalCount
             override val isLastPage: Boolean
-                get() = homeViewModel.isLastPage()
+                get() = githubUserViewModel.isLastPage()
             override val possibleLoad: Boolean
-                get() = homeViewModel.possibleLoad
+                get() = githubUserViewModel.possibleLoad
 
         })
 
@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
             .switchMap { quest -> Observable.just(quest) }
-            .subscribe { quest -> homeViewModel.firstRequest(quest, recyclerGithubUsers) }
+            .subscribe { quest -> githubUserViewModel.firstRequest(quest, recyclerGithubUsers) }
 
 
         return root

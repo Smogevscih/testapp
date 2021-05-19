@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home
+                R.id.githubUserFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -66,13 +66,12 @@ class MainActivity : AppCompatActivity() {
             fillFields(it)
             if (it == emptyUser) {
                 txtExit.visibility = View.INVISIBLE
-                //  drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
                 navController.navigate(R.id.startFragment)
 
             } else {
                 txtExit.visibility = View.VISIBLE
-                //     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-                navController.navigate(R.id.nav_home)
+                navController.navigate(R.id.githubUserFragment)
             }
         })
 

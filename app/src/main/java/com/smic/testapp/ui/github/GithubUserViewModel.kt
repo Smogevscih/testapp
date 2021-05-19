@@ -1,4 +1,4 @@
-package com.smic.testapp.ui.home
+package com.smic.testapp.ui.github
 
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
-class HomeViewModel : ViewModel() {
+class GithubUserViewModel : ViewModel() {
 
 
     private val compositeDisposable = CompositeDisposable()

@@ -1,4 +1,4 @@
-package com.smic.testapp.ui.home
+package com.smic.testapp.ui.github
 
 import android.widget.SearchView
 import io.reactivex.Observable
