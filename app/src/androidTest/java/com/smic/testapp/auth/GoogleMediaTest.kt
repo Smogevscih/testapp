@@ -15,7 +15,7 @@ class GoogleMediaTest {
     @get:Rule
     val rule = ActivityScenarioRule(MainActivity::class.java)
 
-    lateinit var googleMedia: GoogleMedia
+    private lateinit var googleMedia: GoogleMedia
 
 
     @Before

@@ -28,7 +28,7 @@ class StartFragment : Fragment(), View.OnClickListener, IOnBackPressed {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_start, container, false)
-        (requireActivity() as MainActivity).supportActionBar?.hide()
+        (requireActivity() as? MainActivity)?.supportActionBar?.hide()
         btnSignInGoogle = root.findViewById(R.id.btnSignInGoogle)
         btnSignInVK = root.findViewById(R.id.btnSignInVK)
         btnSignInFB = root.findViewById(R.id.btnSignInFB)

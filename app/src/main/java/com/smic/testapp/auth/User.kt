@@ -6,4 +6,5 @@ package com.smic.testapp.auth
  **/
 data class User(val userName: String, val userEmailOrId: String, val userPhoto: String)
 
-val emptyUser = User("Not authorized","", "http://")
+val emptyUser = User("Not authorized", "", "http://")
+val testUser = User("Test USER", "test@mail.ru", "http://")

@@ -33,7 +33,7 @@ class GithubUserFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_github_user, container, false)
         githubUserViewModel =
             ViewModelProvider(this).get(GithubUserViewModel::class.java)
-        (requireActivity() as MainActivity).supportActionBar?.apply {
+        (requireActivity() as? MainActivity)?.supportActionBar?.apply {
             title = getString(R.string.fragment_github_name)
         }?.show()
         sharedViewModel =

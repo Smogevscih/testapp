@@ -22,3 +22,4 @@ val ProgressBar.show: ProgressBar
     get() = this.apply {
         visibility = View.VISIBLE
     }
+
