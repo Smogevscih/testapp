@@ -36,7 +36,7 @@ class TestAuthIntents {
 
     }
 
-    @Test
+    @Test//Sometimes it can hung. Please launch alone
     fun startFBSignIn() {
 
         onView(withId(R.id.btnSignInFB))

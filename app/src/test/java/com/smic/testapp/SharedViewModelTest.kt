@@ -39,6 +39,10 @@ class SharedViewModelTest {
                 user.value = emptyUser
             }
 
+            override fun changeAccount() {
+
+            }
+
         }
     }
 

@@ -58,12 +58,11 @@ class GoogleMedia(private val activity: Activity) : SocialMedia() {
     }
 
     override fun changeAccount() {
-       mGoogleSignInClient.signOut()
+        mGoogleSignInClient.signOut()
         val signInIntent = mGoogleSignInClient.signInIntent
         activity.startActivityForResult(signInIntent, RC_SIGN_CHANGE)
 
     }
-
 
 
 }
