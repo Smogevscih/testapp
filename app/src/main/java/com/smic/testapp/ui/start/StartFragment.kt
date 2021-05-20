@@ -44,8 +44,9 @@ class StartFragment : Fragment(), View.OnClickListener, IOnBackPressed {
 
     override fun onClick(v: View?) {
         if (v is Button) {
-            sharedViewModel.authorizationLiveData.value =
-                FactoryAuthorization.getAuthorization(v.text.toString(), requireActivity())
+            FactoryAuthorization.getAuthorization(v.id, requireActivity())
+                ?.let { sharedViewModel.authorizationLiveData.value = it }
+
         }
     }
 
