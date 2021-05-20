@@ -63,7 +63,11 @@ class SharedViewModel : ViewModel() {
     }
 
     fun changeAccount() {
-        TODO("Not yet implemented")
+        currentAuthorization?.changeAccount()
+    }
+
+    fun silentSignIn() {
+        currentAuthorization?.silentSignIn()
     }
 
 }

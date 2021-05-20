@@ -16,6 +16,7 @@ import com.google.android.gms.common.api.ApiException
 class GoogleMedia(private val activity: Activity) : SocialMedia() {
     private val mGoogleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 777
+    private val RC_SIGN_CHANGE = 666
 
 
     init {
@@ -33,7 +34,7 @@ class GoogleMedia(private val activity: Activity) : SocialMedia() {
     }
 
     override fun getResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean =
-        requestCode == RC_SIGN_IN
+        requestCode == RC_SIGN_IN || requestCode == RC_SIGN_CHANGE
 
     override fun requestUser(data: Intent?) {
         val completedTask = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -56,5 +57,15 @@ class GoogleMedia(private val activity: Activity) : SocialMedia() {
         user.value = emptyUser
     }
 
+    override fun changeAccount() {
+       mGoogleSignInClient.signOut()
+        val signInIntent = mGoogleSignInClient.signInIntent
+        activity.startActivityForResult(signInIntent, RC_SIGN_CHANGE)
+
+    }
+
+    override fun silentSignIn() {
+
+    }
 
 }

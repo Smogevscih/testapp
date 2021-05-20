@@ -13,5 +13,7 @@ interface Authorization {
     fun getResult(requestCode: Int, resultCode: Int, data: Intent?):Boolean
     fun requestUser(data: Intent?)
     fun signOut()
+    fun silentSignIn()
+    fun changeAccount()
 }
 

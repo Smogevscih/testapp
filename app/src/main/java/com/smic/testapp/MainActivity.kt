@@ -21,6 +21,7 @@ import com.smic.testapp.auth.Authorization
 import com.smic.testapp.auth.User
 import com.smic.testapp.auth.emptyUser
 import com.smic.testapp.ui.IOnBackPressed
+import com.smic.testapp.ui.github.GithubUserFragment
 import com.smic.testapp.utils.getCurrentFragment
 import com.squareup.picasso.Picasso
 
@@ -67,10 +68,8 @@ class MainActivity : AppCompatActivity() {
             fillFields(it)
             if (it == emptyUser) {
                 txtExit.visibility = View.INVISIBLE
-
                 navController.navigate(R.id.startFragment)
-
-            } else {
+            } else if (supportFragmentManager.getCurrentFragment !is GithubUserFragment){
                 txtExit.visibility = View.VISIBLE
                 navController.navigate(R.id.githubUserFragment)
             }
@@ -112,7 +111,8 @@ class MainActivity : AppCompatActivity() {
         if (data == null || !authorization.getResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data)
         } else {
-            sharedViewModel.requestUser(data)
+            if (resultCode == -1) sharedViewModel.requestUser(data)
+            if (resultCode == 0) sharedViewModel.silentSignIn()
         }
     }
 
@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
 
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {

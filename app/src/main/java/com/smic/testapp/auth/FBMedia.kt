@@ -49,6 +49,14 @@ class FBMedia(private val activity: Activity) : SocialMedia() {
         user.value = emptyUser
     }
 
+    override fun silentSignIn() {
+        TODO("Not yet implemented")
+    }
+
+    override fun changeAccount() {
+        TODO("Not yet implemented")
+    }
+
     override fun requestUser(data: Intent?) {
 
     }
