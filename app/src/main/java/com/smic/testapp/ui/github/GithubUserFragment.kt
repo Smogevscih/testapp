@@ -13,6 +13,7 @@ import com.smic.testapp.MainActivity
 import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
 import com.smic.testapp.adapter.PaginationScrollListener
+import com.smic.testapp.adapter.UserAdapter
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
@@ -47,6 +48,12 @@ class GithubUserFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerGithubUsers.layoutManager = linearLayoutManager
 
+        githubUserViewModel.adapter.observe(viewLifecycleOwner, {
+            it?.let {
+                initRecycler(it)
+            }
+        })
+
 
         //add listener for pagination
         recyclerGithubUsers.addOnScrollListener(object :
@@ -54,7 +61,7 @@ class GithubUserFragment : Fragment() {
                 linearLayoutManager
             ) {
             override fun loadMoreItems() {
-                githubUserViewModel.nextPage(recyclerGithubUsers)
+                githubUserViewModel.nextPage()
             }
 
             override val totalPageCount: Int
@@ -72,15 +79,22 @@ class GithubUserFragment : Fragment() {
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
             .switchMap { quest -> Observable.just(quest) }
-            .subscribe { quest -> githubUserViewModel.firstRequest(quest, recyclerGithubUsers) }
+            .subscribe { quest -> githubUserViewModel.firstRequest(quest) }
 
 
         return root
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
+        githubUserViewModel.adapter.removeObservers(viewLifecycleOwner)
         disposeSearchView.dispose()
+    }
+
+    private fun initRecycler(userAdapter: UserAdapter) {
+        recyclerGithubUsers.adapter = userAdapter
+
     }
 }
 

@@ -1,7 +1,8 @@
 package com.smic.testapp.ui.github
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
 import com.smic.testapp.TestApp.Companion.requestApi
 import com.smic.testapp.adapter.UserAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,11 +23,14 @@ class GithubUserViewModel : ViewModel() {
 
     private var currentQuery = ""
 
+    private val adapterLiveData = MutableLiveData<UserAdapter?>().apply {
+        value = null
+    }
 
-    fun firstRequest(
-        query: String,
-        recyclerGithubUsers: RecyclerView
-    ) {
+    val adapter: LiveData<UserAdapter?> = adapterLiveData
+
+
+    fun firstRequest(query: String) {
         initValue()
         currentQuery = query
         compositeDisposable.add(
@@ -37,7 +41,7 @@ class GithubUserViewModel : ViewModel() {
                     totalCount = it.totalCount ?: 0
                     maxPages()
                     it.userItems?.let { githubUsers ->
-                        recyclerGithubUsers.adapter = UserAdapter(githubUsers, isLastPage())
+                        adapterLiveData.value = UserAdapter(githubUsers, isLastPage())
                     }
 
                 }, {
@@ -59,7 +63,7 @@ class GithubUserViewModel : ViewModel() {
         if (maxPage > 10) maxPage = 10 //for test access
     }
 
-    fun nextPage(recyclerGithubUsers: RecyclerView) {
+    fun nextPage() {
         if (!isLastPage() && possibleLoad) {
             possibleLoad = false
             page = page.inc()
@@ -69,10 +73,7 @@ class GithubUserViewModel : ViewModel() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
                         it.userItems?.let { githubUsers ->
-                            (recyclerGithubUsers.adapter as UserAdapter)
-                                .addNewUsers(
-                                    githubUsers, isLastPage()
-                                )
+                            adapterLiveData.value?.addNewUsers(githubUsers, isLastPage())
                             possibleLoad = true
                         }
 
