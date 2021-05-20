@@ -10,9 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.smic.testapp.MainActivity
 import com.smic.testapp.R
 import com.smic.testapp.SharedViewModel
-import com.smic.testapp.auth.FBMedia
-import com.smic.testapp.auth.GoogleMedia
-import com.smic.testapp.auth.VKMedia
+import com.smic.testapp.auth.FactoryAuthorization
 import com.smic.testapp.ui.IOnBackPressed
 
 
@@ -45,17 +43,9 @@ class StartFragment : Fragment(), View.OnClickListener, IOnBackPressed {
     }
 
     override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btnSignInGoogle -> {
-                sharedViewModel.authorizationLiveData.value = GoogleMedia(requireActivity())
-            }
-            R.id.btnSignInVK -> {
-                sharedViewModel.authorizationLiveData.value = VKMedia(requireActivity())
-            }
-            R.id.btnSignInFB -> {
-                sharedViewModel.authorizationLiveData.value = FBMedia(requireActivity())
-            }
-
+        if (v is Button) {
+            sharedViewModel.authorizationLiveData.value =
+                FactoryAuthorization.getAuthorization(v.text.toString(), requireActivity())
         }
     }
 
