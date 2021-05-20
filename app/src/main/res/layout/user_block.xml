@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="2dp"
+    android:elevation="8dp"
+    android:background="@drawable/background_github_user"
+    android:padding="4dp">
+
+
+    <ImageView
+        android:id="@+id/imgGitUserAvatar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/txtGitUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="center|start"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imgGitUserAvatar"
+        app:layout_constraintStart_toEndOf="@+id/imgGitUserAvatar"
+        app:layout_constraintTop_toTopOf="@+id/imgGitUserAvatar"
+        tools:text="User Name" />
+
+    <ProgressBar
+        android:id="@+id/progressAvatar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/imgGitUserAvatar"
+        app:layout_constraintEnd_toEndOf="@+id/imgGitUserAvatar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imgGitUserAvatar"
+        app:layout_constraintTop_toTopOf="@+id/imgGitUserAvatar" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
