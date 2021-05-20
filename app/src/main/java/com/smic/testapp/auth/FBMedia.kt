@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.facebook.*
+import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 
@@ -19,12 +20,18 @@ class FBMedia(private val activity: Activity) : SocialMedia() {
 
     init {
         nameSocialMedia = "FB"
+//        val profileTracker = object : ProfileTracker() {
+//            override fun onCurrentProfileChanged(oldProfile: Profile?, currentProfile: Profile?) {
+//                println()
+//            }
+//
+//        }.startTracking()
     }
 
     override fun signIn() {
 
         LoginManager.getInstance().logInWithReadPermissions(activity, listOf("email"))
-
+        LoginManager.getInstance().loginBehavior = LoginBehavior.WEB_VIEW_ONLY
         LoginManager.getInstance().registerCallback(callbackManager,
             object : FacebookCallback<LoginResult?> {
                 override fun onSuccess(loginResult: LoginResult?) {
@@ -49,12 +56,26 @@ class FBMedia(private val activity: Activity) : SocialMedia() {
         user.value = emptyUser
     }
 
-    override fun silentSignIn() {
-        TODO("Not yet implemented")
-    }
 
     override fun changeAccount() {
-        TODO("Not yet implemented")
+        LoginManager.getInstance().logOut()
+        LoginManager.getInstance().unregisterCallback(callbackManager)
+        LoginManager.getInstance().registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult?> {
+                override fun onSuccess(loginResult: LoginResult?) {
+                    Log.d("MyTag", "onSuccess")
+                    loginResult?.let { requestAfterSuccess(it) }
+                }
+
+                override fun onCancel() {
+
+                }
+
+                override fun onError(exception: FacebookException) {
+
+                }
+            })
+        LoginManager.getInstance().logInWithReadPermissions(activity, listOf("email"))
     }
 
     override fun requestUser(data: Intent?) {

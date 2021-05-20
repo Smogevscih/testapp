@@ -17,10 +17,11 @@ import org.json.JSONObject
  *@autor Smogevscih Yuri
 16.05.2021
  **/
-class VKMedia(private val activity: Activity):SocialMedia() {
+class VKMedia(private val activity: Activity) : SocialMedia() {
     init {
         nameSocialMedia = "VK"
     }
+
     private val callback = object : VKAuthCallback {
         override fun onLogin(token: VKAccessToken) {
 
@@ -40,6 +41,7 @@ class VKMedia(private val activity: Activity):SocialMedia() {
                 }
             })
         }
+
         override fun onLoginFailed(errorCode: Int) {
             user.value = emptyUser
         }
@@ -54,12 +56,10 @@ class VKMedia(private val activity: Activity):SocialMedia() {
         user.value = emptyUser
     }
 
-    override fun silentSignIn() {
-        TODO("Not yet implemented")
-    }
 
     override fun changeAccount() {
-        TODO("Not yet implemented")
+        VK.logout()
+        signIn()
     }
 
     override fun requestUser(data: Intent?) {
@@ -80,6 +80,7 @@ class VKUsersRequest : VKRequest<List<VKUser>> {
             addParam("user_ids", uids.joinToString(","))
         }
         addParam("fields", "photo_200")
+
     }
 
     override fun parse(r: JSONObject): List<VKUser> {

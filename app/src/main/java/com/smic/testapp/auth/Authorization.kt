@@ -10,10 +10,9 @@ import androidx.lifecycle.MutableLiveData
 interface Authorization {
     fun signIn()
     fun getUserLiveData(): MutableLiveData<User>
-    fun getResult(requestCode: Int, resultCode: Int, data: Intent?):Boolean
+    fun getResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean
     fun requestUser(data: Intent?)
     fun signOut()
-    fun silentSignIn()
     fun changeAccount()
 }
 

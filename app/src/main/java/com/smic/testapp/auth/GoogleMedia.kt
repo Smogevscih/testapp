@@ -64,8 +64,6 @@ class GoogleMedia(private val activity: Activity) : SocialMedia() {
 
     }
 
-    override fun silentSignIn() {
 
-    }
 
 }

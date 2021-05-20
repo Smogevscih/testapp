@@ -66,8 +66,6 @@ class SharedViewModel : ViewModel() {
         currentAuthorization?.changeAccount()
     }
 
-    fun silentSignIn() {
-        currentAuthorization?.silentSignIn()
-    }
+
 
 }

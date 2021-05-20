@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             super.onActivityResult(requestCode, resultCode, data)
         } else {
             if (resultCode == -1) sharedViewModel.requestUser(data)
-            if (resultCode == 0) sharedViewModel.silentSignIn()
+
         }
     }
 
