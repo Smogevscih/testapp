@@ -39,13 +39,15 @@ class StartFragment : Fragment(), View.OnClickListener, IOnBackPressed {
         btnSignInGoogle.setOnClickListener(this)
         btnSignInVK.setOnClickListener(this)
         btnSignInFB.setOnClickListener(this)
+
         return root
     }
 
     override fun onClick(v: View?) {
         if (v is Button) {
-            sharedViewModel.authorizationLiveData.value =
-                FactoryAuthorization.getAuthorization(v.text.toString(), requireActivity())
+            FactoryAuthorization.getAuthorization(v.id, requireActivity())
+                ?.let { sharedViewModel.authorizationLiveData.value = it }
+
         }
     }
 
