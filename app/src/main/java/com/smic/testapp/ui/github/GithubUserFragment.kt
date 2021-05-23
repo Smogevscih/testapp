@@ -65,11 +65,11 @@ class GithubUserFragment : Fragment() {
             }
 
             override val totalPageCount: Int
-                get() = githubUserViewModel.totalCount
+                get() = githubUserViewModel.getTotalCount()
             override val isLastPage: Boolean
                 get() = githubUserViewModel.isLastPage()
             override val possibleLoad: Boolean
-                get() = githubUserViewModel.possibleLoad
+                get() = githubUserViewModel.possibleLoad()
 
         })
 
